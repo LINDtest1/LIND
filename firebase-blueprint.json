@@ -1,0 +1,102 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "ArtHub account information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "avatarId": { "type": "string", "description": "ID of the chosen preset avatar" },
+        "isArtistActive": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "createdAt"]
+    },
+    "RegisteredArtwork": {
+      "title": "Registered Artwork",
+      "description": "Artwork from Lind Studios registered by a collector",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "artworkId": { "type": "string", "description": "Reference to the internal project/artwork ID" },
+        "certificateNumber": { "type": "string" },
+        "registeredAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "artworkId", "registeredAt"]
+    },
+    "ArtistProfile": {
+      "title": "Artist Profile",
+      "description": "Public artist profile for ArtHub users",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "bio": { "type": "string" },
+        "style": { "type": "string", "description": "Description of their art style" },
+        "website": { "type": "string" },
+        "socialLinks": { 
+          "type": "object",
+          "properties": {
+            "instagram": { "type": "string" },
+            "twitter": { "type": "string" },
+            "facebook": { "type": "string" }
+          }
+        },
+        "isActive": { "type": "boolean" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "isActive"]
+    },
+    "Submission": {
+      "title": "Community Submission",
+      "description": "Original work submitted by an ArtHub artist for review",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "reviewed"] },
+        "submittedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "title", "imageUrl", "status", "submittedAt"]
+    },
+    "Interaction": {
+      "title": "User Interaction",
+      "description": "Follows and Likes for projects",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "targetId": { "type": "string", "description": "Project ID or Artist ID" },
+        "type": { "type": "string", "enum": ["like", "follow"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "targetId", "type", "createdAt"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "User",
+      "description": "User profile data"
+    },
+    "registeredArtworks/{artworkRegId}": {
+      "schema": "RegisteredArtwork",
+      "description": "Collector registered artworks"
+    },
+    "artistProfiles/{userId}": {
+      "schema": "ArtistProfile",
+      "description": "Extended artist profile data"
+    },
+    "submissions/{submissionId}": {
+      "schema": "Submission",
+      "description": "User art submissions for review"
+    },
+    "interactions/{interactionId}": {
+      "schema": "Interaction",
+      "description": "User likes and follows"
+    }
+  }
+}
